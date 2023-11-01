@@ -11,7 +11,7 @@ GO
 DROP TABLE IF EXISTS Clientes;
 -- Tabla de Clientes
 CREATE TABLE Clientes (
-    ClienteID INT PRIMARY KEY,
+    ClienteID INT PRIMARY KEY IDENTITY(1, 1) ,
     Nombre NVARCHAR(255),
     Codigo NVARCHAR(50),
     FechaAlta DATE,
@@ -25,11 +25,11 @@ CREATE TABLE Clientes (
 DROP TABLE IF EXISTS Servicios;
 -- Tabla de Servicios
 CREATE TABLE Servicios (
-    ServicioID INT PRIMARY KEY,
+    ServicioID INT PRIMARY KEY IDENTITY(1, 1),
     ClienteID INT,
     TipoServicio NVARCHAR(50), -- Cable o Internet
     Velocidad INT, -- Para clientes de Internet
-    TipoCable NVARCHAR(50), -- Básico o Premium para clientes de cable
+    TipoCable NVARCHAR(50), -- BÃ¡sico o Premium para clientes de cable
     Ubicacion NVARCHAR(255),
     FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID)
 );
@@ -37,7 +37,7 @@ CREATE TABLE Servicios (
 DROP TABLE IF EXISTS PaquetesServicios;
 -- Tabla de Paquetes de Servicios
 CREATE TABLE PaquetesServicios (
-    PaqueteID INT PRIMARY KEY,
+    PaqueteID INT PRIMARY KEY IDENTITY(1, 1),
     Nombre NVARCHAR(255),
     CostoMensual DECIMAL(10, 2),
     Descuento DECIMAL(5, 2),
@@ -48,7 +48,7 @@ CREATE TABLE PaquetesServicios (
 DROP TABLE IF EXISTS Facturas;
 -- Tabla de Facturas
 CREATE TABLE Facturas (
-    FacturaID INT PRIMARY KEY,
+    FacturaID INT PRIMARY KEY IDENTITY(1, 1),
     ClienteID INT,
     NumeroFactura NVARCHAR(50),
     Fecha DATE,
@@ -60,7 +60,7 @@ CREATE TABLE Facturas (
 DROP TABLE IF EXISTS DetallesFactura;
 -- Tabla de Detalles de Factura
 CREATE TABLE DetallesFactura (
-    DetalleID INT PRIMARY KEY,
+    DetalleID INT PRIMARY KEY IDENTITY(1, 1),
     FacturaID INT,
     CodigoServicio NVARCHAR(20),
     TipoServicio NVARCHAR(50),
@@ -73,7 +73,7 @@ CREATE TABLE DetallesFactura (
 DROP TABLE IF EXISTS Pagos;
 -- Tabla de Pagos
 CREATE TABLE Pagos (
-    PagoID INT PRIMARY KEY,
+    PagoID INT PRIMARY KEY IDENTITY(1, 1),
     FacturaID INT,
     FechaPago DATE,
     MontoPagado DECIMAL(10, 2),
@@ -83,17 +83,17 @@ CREATE TABLE Pagos (
 DROP TABLE IF EXISTS Empleados;
 -- Tabla de Empleados
 CREATE TABLE Empleados (
-    EmpleadoID INT PRIMARY KEY,
+    EmpleadoID INT PRIMARY KEY IDENTITY(1, 1),
     NombreEmpleado NVARCHAR(255),
     Puesto NVARCHAR(50),
     Sueldo DECIMAL(10, 2),
-    -- Otros campos relacionados con la nómina
+    -- Otros campos relacionados con la nÃ³mina
 );
 
 DROP TABLE IF EXISTS PagosEmpleados;
 -- Tabla de Pagos de Empleados
 CREATE TABLE PagosEmpleados (
-    PagoEmpleadoID INT PRIMARY KEY,
+    PagoEmpleadoID INT PRIMARY KEY IDENTITY(1, 1),
     EmpleadoID INT,
     FechaPago DATE,
     MontoPagar DECIMAL(10, 2),
