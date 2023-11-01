@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/dotnet:1-7.0-bullseye
+FROM mcr.microsoft.com/devcontainers/dotnet:1-6.0-bullseye
 
 # Install SQL Tools: SQLPackage and sqlcmd
 COPY mssql/installSQLtools.sh installSQLtools.sh
