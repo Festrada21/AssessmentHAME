@@ -1,7 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<appDBContext>(x => x.UseSqlServer("name=DefaultConnection"));
 
 var app = builder.Build();
 
@@ -13,12 +16,14 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+app.UseHttpsRedirection();  
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthorization();
+
+//builder.Services.AddDbContext<appDBContext>(x => x.UseSqlServer("name=DockerConnection"));
 
 app.MapControllerRoute(
     name: "default",

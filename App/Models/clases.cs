@@ -94,6 +94,14 @@ public class DescuentoConfigurable
     public decimal ValorDescuento { get; set; }
 }
 
+public class ClienteServicioDescuento
+{
+    public int ClienteServicioDescuentoID { get; set; }
+    public int ClienteServicioID { get; set; }
+    public int DescuentoConfigurableID { get; set; }
+
+    // Otras propiedades y relaciones
+}
 public class ClienteDescuento
 {
     public int ClienteDescuentoID { get; set; }
