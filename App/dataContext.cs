@@ -10,5 +10,9 @@ namespace App
         }
 
         public DbSet<Cliente> Clientes { get; set; }
+
+        public DbSet<App.Models.Data.Empleado>? Empleado { get; set; }
+
+        public DbSet<App.Models.Data.Servicio>? Servicio { get; set; }
     }
 }
