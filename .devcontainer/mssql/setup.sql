@@ -163,7 +163,24 @@ VALUES
     (1, '2023-03-10', 3000.00, 150.00, 450.00),
     (2, '2023-03-11', 2500.00, 125.00, 375.00);
 
+-- Procedimiento almacenado para asignar servicios contratados a un cliente
+CREATE PROCEDURE AsignarServiciosACliente
+    @ClienteID INT,
+    @TipoServicio NVARCHAR(50),
+    @Velocidad INT,
+    @TipoCable NVARCHAR(50)
+AS
+BEGIN
+    -- Verificar si el cliente ya existe
+    IF NOT EXISTS (SELECT 1 FROM Clientes WHERE ClienteID = @ClienteID)
+    BEGIN
+        THROW 51000, 'El cliente especificado no existe.', 1;
+    END
 
+    -- Insertar el servicio contratado
+    INSERT INTO Servicios (ClienteID, TipoServicio, Velocidad, TipoCable)
+    VALUES (@ClienteID, @TipoServicio, @Velocidad, @TipoCable);
+END
 
 
 
