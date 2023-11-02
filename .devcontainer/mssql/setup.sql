@@ -110,6 +110,7 @@ CREATE TABLE PagosEmpleados (
     FOREIGN KEY (EmpleadoID) REFERENCES Empleados(EmpleadoID)
 );
 
+USE dbapp;
 -- Insertar----
 INSERT INTO Clientes(Nombre,Codigo,FechaAlta,Direccion,Correo,Telefono,EsClienteCable,EsClienteInternet)
 VALUES
@@ -118,3 +119,54 @@ VALUES
   ('Sheila Lee',3,'09/24/2024','758-4256 Erat. Rd.','mauris.aliquam@outlook.ca','706886232',1,1),
   ('Neve Higgins',4,'01/28/2023','346-8187 Ipsum Av.','rutrum.justo@icloud.ca','258056325',1,1),
   ('Baker Joyner',5,'08/18/2024','1523 Lacinia Rd.','nunc.ullamcorper@yahoo.com','484810720',1,0);
+
+INSERT INTO Servicios (ClienteID, TipoServicio, Velocidad, TipoCable, Ubicacion)
+VALUES
+    (1, 'Internet', 100, NULL, 'Ubicacion1'),
+    (2, 'Cable', NULL, 'Básico', 'Ubicacion2'),
+    (3, 'Internet', 50, NULL, 'Ubicacion3'),
+    (4, 'Cable', NULL, 'Premium', 'Ubicacion4');
+
+
+INSERT INTO ServiciosSuspendidos (SuspendidoID, ClienteID, FechaSuspension)
+VALUES
+    (1, 1, '2023-01-15'),
+    (2, 3, '2023-02-10');
+
+INSERT INTO PaquetesServicios (Nombre, CostoMensual, Descuento, AumentoVelocidad, UbicacionServicio)
+VALUES
+    ('Paquete1', 50.00, 5.00, 20, 'Ubicacion1'),
+    ('Paquete2', 75.00, 7.50, 10, 'Ubicacion2');
+
+INSERT INTO Facturas (ClienteID, NumeroFactura, Fecha, Serie, Total)
+VALUES
+    (1, 'F2023001', '2023-03-01', 'A', 50.00),
+    (2, 'F2023002', '2023-03-02', 'B', 75.00);
+
+INSERT INTO DetallesFactura (FacturaID, CodigoServicio, TipoServicio, CostoMensual, Descuento, CostoConDescuento)
+VALUES
+    (1, 'SVC1', 'Internet', 50.00, 5.00, 45.00),
+    (2, 'SVC2', 'Cable', 75.00, 7.50, 67.50);
+
+INSERT INTO Pagos (FacturaID, FechaPago, MontoPagado)
+VALUES
+    (1, '2023-03-05', 45.00),
+    (2, '2023-03-06', 67.50);
+
+INSERT INTO Empleados (NombreEmpleado, Puesto, Sueldo)
+VALUES
+    ('Empleado1', 'Técnico', 3000.00),
+    ('Empleado2', 'Atención al Cliente', 2500.00);
+
+INSERT INTO PagosEmpleados (EmpleadoID, FechaPago, MontoPagar, CuotasIGSS, RetencionISR)
+VALUES
+    (1, '2023-03-10', 3000.00, 150.00, 450.00),
+    (2, '2023-03-11', 2500.00, 125.00, 375.00);
+
+
+
+
+
+
+
+

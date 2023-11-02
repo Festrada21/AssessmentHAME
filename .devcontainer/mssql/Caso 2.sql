@@ -289,29 +289,19 @@ VALUES
 ('19', '19', 'Cliente 19', 'Dirección 19', '1234567908', 'Grupo 19', NEWID()),
 ('20', '20', 'Cliente 20', 'Dirección 20', '1234567909', 'Grupo 20', NEWID());
 
-INSERT INTO Localidad (localidad, departamento, pais)
+INSERT INTO Envio (codenvio, noenvio, codestado, idtipodoc, idtipomov, codconvoy, codlocalidad, codcliente, codproveedor, codempresa, codfinca, codlote, codtanque, codpipa, codcabezal, codpesador, codsupervisor, codpiloto, codagente, fecha, fcierre, ftara, fbruto, ptara, pbruto, umt, umb, racimos, sacos, pacas, autorizacion, marchamo, candado, observacion, transferido, codproducto, codlaboratorista, flaboratorio)
 VALUES
-('Guatemala', 'Guatemala', 'Guatemala'),
-('Quetzaltenango', 'Quetzaltenango', 'Guatemala'),
-('Antigua Guatemala', 'Sacatepéquez', 'Guatemala'),
-('San Pedro Sula', 'Cortés', 'Honduras'),
-('Tegucigalpa', 'Francisco Morazán', 'Honduras'),
-('San Salvador', 'San Salvador', 'El Salvador'),
-('Managua', 'Managua', 'Nicaragua'),
-('San José', 'San José', 'Costa Rica'),
-('Panamá', 'Panamá', 'Panamá');
+    ('E001', 3, 'Estado1', 1, 1, 'Convoy1', 'Localidad1', '3', '3', '2', '1', 'Lote1', 'Tanque1', 'Pipa1', 'Cabezal1', 'Pesador1', '3', 'Piloto1', 'Agente1', '2014-01-01', '2014-01-02', '2014-01-03', '2014-01-04', 10.5, 100.2, 20.5, 5.2, 500, 50, 5, 'Autorizacion1', 'Marchamo1', 'Candado1', 'Observacion1', 1, '1', '3', '2014-01-05'),
+    ('E002', 3, 'Estado2', 2, 2, 'Convoy2', 'Localidad2', '4', '4', '2', '2', 'Lote2', 'Tanque2', 'Pipa2', 'Cabezal2', 'Pesador2', '4', 'Piloto2', 'Agente2', '2014-01-02', '2014-01-03', '2014-01-04', '2014-01-05', 11.5, 110.2, 21.5, 6.2, 600, 60, 6, 'Autorizacion2', 'Marchamo2', 'Candado2', 'Observacion2', 1, '2', '4', '2014-01-06'),
+    ('E020', 5, 'Estado2', 2, 2, 'Convoy2', 'Localidad2', '4', '2', '3', '2', 'Lote2', 'Tanque2', 'Pipa2', 'Cabezal2', 'Pesador2', '5', 'Piloto2', 'Agente2', '2014-01-20', '2014-01-21', '2014-01-22', '2014-01-23', 20.5, 200.2, 40.5, 10.2, 1000, 100, 10, 'Autorizacion20', 'Marchamo20', 'Candado20', 'Observacion20', 1, '2', '4', '2014-01-24');
 
-INSERT INTO TipoVehiculo (tipovehiculo, capacidad)
-VALUES
-('Camión cisterna', 20),
-('Camión cisterna doble', 40),
-('Tractocamión tanque', 60),
-('Camión plataforma', 10),
-('Camión plataforma doble', 20),
-('Camión tanque', 20),
-('Camión tanque doble', 40),
-('Tractocamión plataforma', 30),
-('Tractocamión plataforma doble', 60);
+INSERT INTO Pipa (codpipa,codtransportista,codlocalidad,codtipovehiculo,numero,capacidad,especificacion,tara,ftara,rowguid,unidadnegocio,activo,Propio,UT_UMT,Estado,PlacaNac,TiempoRestriccion)
+VALUES(1,'ABC-123','GT','C_cis',1,20,'Acero inoxidable',10000,'2023-08-04',NEWID(),'Operaciones',1,1,'Guatemala','Activo','ABC-123','0'),
+(2,'DEF-456','QTZ','C_cis_d',2,40,'Acero al carbono',20000,'2023-08-05',NEWID(),'Operaciones',1,1,'Guatemala','Activo','DEF-456','0'),
+(3,'GHI-789','PB','T_tan',3,60,'Aluminio',30000,'2023-08-06',NEWID(),'Operaciones',1,1,'Guatemala','Activo','GHI-789','0'),
+(19,'MNP-012','ES','C_plat',19,20,'Acero inoxidable',10000,'2023-08-20',NEWID(),'Operaciones',1,1,'Guatemala','Activo','MNP-012','0'),
+(20,'QRS-345','RT','C_plat_d',20,40,'Acero al carbono',20000,'2023-08-21',NEWID(),'Operaciones',1,1,'Guatemala','Activo','QRS-345','0');
+
 
 --Creacion de vistas
 -- a. Top 10 de clientes que tienen mayor peso bruto generado por producto y por mes 
@@ -323,9 +313,11 @@ VALUES
 --      - Suma peso bruto de la transacción (pbruto)
 --      - Mes (fecha)
 --      - Año (fecha
+USE dbcaso2;
+DROP VIEW IF EXISTS VistaTopClientesPorProductoMes;
+GO
 
-DROP TABLE IF EXISTS VistaTopClientesPorProductoMes;
-CREATE VIEW VistaTopClientesPorProductoMes AS
+CREATE VIEW dbo.VistaTopClientesPorProductoMes AS
 SELECT TOP 10
     C.cliente AS NombreCliente,
     C.direccion AS DireccionCliente,
@@ -335,12 +327,17 @@ SELECT TOP 10
     DATEPART(YEAR, E.fecha) AS Año,
     SUM(E.pbruto) AS PesoBruto
 FROM Cliente C
-INNER JOIN Envio E ON C.codcliente = E.codcliente
-INNER JOIN Producto P ON E.codproducto = P.codproducto
+LEFT JOIN Envio E ON C.codcliente = E.codcliente
+LEFT JOIN Producto P ON E.codproducto = P.codproducto
 WHERE DATEPART(YEAR, E.fecha) = 2014
 GROUP BY C.cliente, C.direccion, C.nit, P.producto, DATEPART(MONTH, E.fecha), DATEPART(YEAR, E.fecha)
-ORDER BY SUM(E.pbruto) DESC;
+--ORDER BY SUM(E.pbruto) DESC;
+GO
 
+SELECT * FROM Cliente C
+INNER JOIN Envio E ON c.Codcliente = E.codcliente
+INNER JOIN Producto P ON E.codproducto = P.codproducto
+WHERE DATEPART(YEAR, E.fecha) = 2014
 -- b. Generar un detalle por finca del número[conteo] de transacciones[envios] mensuales 
 --     durante el primer semestre del 2015, excluir aquellos conteos inferiores a 100, ordenar 
 --     por finca. Listar:
@@ -350,18 +347,32 @@ ORDER BY SUM(E.pbruto) DESC;
 --     - Mes (fecha)
 --     - Año (fecha)
 
+DROP VIEW IF EXISTS VistaDetallePorFinca;
+GO
 CREATE VIEW VistaDetallePorFinca AS
 SELECT
     F.finca AS NombreFinca,
-    E.empresa AS NombreEmpresa,
+    ISNULL(EM.empresa, 'Empresa Desconocida') AS NombreEmpresa,
     COUNT(E.idenvio) AS TotalTransacciones,
     DATEPART(MONTH, E.fecha) AS Mes,
     DATEPART(YEAR, E.fecha) AS Año
 FROM IdFinca F
-INNER JOIN Envio E ON F.idfinca = E.codfinca
-INNER JOIN Empresa EM ON F.codempresa = EM.idempresa
-WHERE DATEPART(YEAR, E.fecha) = 2015
+LEFT JOIN (
+    SELECT E.codfinca, E.idenvio, E.fecha, E.codempresa
+    FROM Envio E
+    WHERE DATEPART(YEAR, E.fecha) = 2015
     AND DATEPART(MONTH, E.fecha) BETWEEN 1 AND 6
-GROUP BY F.finca, E.empresa, DATEPART(MONTH, E.fecha), DATEPART(YEAR, E.fecha)
+) E ON F.idfinca = E.codfinca
+LEFT JOIN Empresa EM ON F.codempresa = EM.codempresa
+GROUP BY F.finca, EM.empresa, DATEPART(MONTH, E.fecha), DATEPART(YEAR, E.fecha)
 HAVING COUNT(E.idenvio) >= 100
-ORDER BY F.finca, DATEPART(MONTH, E.fecha);
+-- ORDER BY F.finca, DATEPART(MONTH, E.fecha);
+
+GO
+
+
+SELECT *
+FROM VistaDetallePorFinca;
+
+SELECT * 
+FROM VistaTopClientesPorProductoMes;
