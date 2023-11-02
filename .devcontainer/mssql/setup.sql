@@ -164,11 +164,14 @@ VALUES
     (2, '2023-03-11', 2500.00, 125.00, 375.00);
 
 -- Procedimiento almacenado para asignar servicios contratados a un cliente
+DROP PROCEDURE IF EXISTS AsignarServiciosACliente
+
 CREATE PROCEDURE AsignarServiciosACliente
     @ClienteID INT,
     @TipoServicio NVARCHAR(50),
     @Velocidad INT,
-    @TipoCable NVARCHAR(50)
+    @TipoCable NVARCHAR(50),
+    @Ubicacion NVARCHAR(50)
 AS
 BEGIN
     -- Verificar si el cliente ya existe
@@ -178,8 +181,8 @@ BEGIN
     END
 
     -- Insertar el servicio contratado
-    INSERT INTO Servicios (ClienteID, TipoServicio, Velocidad, TipoCable)
-    VALUES (@ClienteID, @TipoServicio, @Velocidad, @TipoCable);
+    INSERT INTO Servicios (ClienteID, TipoServicio, Velocidad, TipoCable, Ubicacion)
+    VALUES (@ClienteID, @TipoServicio, @Velocidad, @TipoCable, @Ubicacion);
 END
 
 
