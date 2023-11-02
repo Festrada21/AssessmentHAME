@@ -313,11 +313,6 @@ VALUES
 ('Tractocamión plataforma', 30),
 ('Tractocamión plataforma doble', 60);
 
-
-
-
-
-
 --Creacion de vistas
 -- a. Top 10 de clientes que tienen mayor peso bruto generado por producto y por mes 
 --      durante el año 2014. listar:
