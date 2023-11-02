@@ -34,6 +34,14 @@ CREATE TABLE Servicios (
     FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID)
 );
 
+DROP TABLE IF EXISTS ServiciosSuspendidos;
+CREATE TABLE ServiciosSuspendidos (
+    SuspendidoID INT PRIMARY KEY,
+    ClienteID INT,
+    FechaSuspension DATE,
+    FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID)
+);
+
 DROP TABLE IF EXISTS PaquetesServicios;
 -- Tabla de Paquetes de Servicios
 CREATE TABLE PaquetesServicios (
